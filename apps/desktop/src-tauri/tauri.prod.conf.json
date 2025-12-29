@@ -6,12 +6,7 @@
 	"build": {
 		"beforeBundleCommand": "node scripts/prodBeforeBundle.js"
 	},
-	"plugins": {
-		"updater": {
-			"active": false,
-			"pubkey": ""
-		}
-	},
+	"plugins": {},
 	"bundle": {
 		"active": true,
 		"createUpdaterArtifacts": false,
