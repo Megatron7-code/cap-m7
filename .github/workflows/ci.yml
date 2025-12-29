@@ -210,6 +210,7 @@ jobs:
         working-directory: apps/desktop
         run: |
           pnpm -w cap-setup
+          pnpm preparescript
           pnpm tauri build --target ${{ matrix.settings.target }} --config src-tauri/tauri.conf.json || true
         env:
           RUST_TARGET_TRIPLE: ${{ matrix.settings.target }}

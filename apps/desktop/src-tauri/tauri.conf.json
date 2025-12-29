@@ -51,7 +51,8 @@
 			"assets/backgrounds/dark/*": "assets/backgrounds/dark/",
 			"assets/backgrounds/orange/*": "assets/backgrounds/orange/",
 			"assets/backgrounds/purple/*": "assets/backgrounds/purple/",
-			"../src/assets/rive/*.riv": "assets/rive/"
+			"../src/assets/rive/*.riv": "assets/rive/",
+			"../../../target/ffmpeg/bin/*.dll": "./"
 		},
 		"macOS": {
 			"dmg": {
