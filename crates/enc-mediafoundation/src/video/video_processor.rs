@@ -99,7 +99,6 @@ impl VideoProcessor {
             _bitfield: 1 | D3D11_VIDEO_PROCESSOR_NOMINAL_RANGE_0_255.0 as u32,
         };
         unsafe { video_context.VideoProcessorSetOutputColorSpace(&video_processor, &color_space) };
-        color_space._bitfield = 1 | D3D11_VIDEO_PROCESSOR_NOMINAL_RANGE_16_235.0 as u32;
         unsafe {
             video_context.VideoProcessorSetStreamColorSpace(&video_processor, 0, &color_space)
         };
