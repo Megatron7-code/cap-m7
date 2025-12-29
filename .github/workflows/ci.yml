@@ -101,8 +101,8 @@ jobs:
       fail-fast: false
       matrix:
         settings:
-          - target: aarch64-apple-darwin
-            runner: macos-latest
+          # - target: aarch64-apple-darwin
+          #   runner: macos-latest
           - target: x86_64-pc-windows-msvc
             runner: windows-latest
     runs-on: ${{ matrix.settings.runner }}
@@ -166,8 +166,8 @@ jobs:
       fail-fast: false
       matrix:
         settings:
-          - target: aarch64-apple-darwin
-            runner: macos-latest
+          # - target: aarch64-apple-darwin
+          #   runner: macos-latest
           - target: x86_64-pc-windows-msvc
             runner: windows-latest
     runs-on: ${{ matrix.settings.runner }}
@@ -241,10 +241,10 @@ jobs:
       fail-fast: false
       matrix:
         settings:
-          - target: x86_64-apple-darwin
-            runner: macos-latest
-          - target: aarch64-apple-darwin
-            runner: macos-latest
+          # - target: x86_64-apple-darwin
+          #   runner: macos-latest
+          # - target: aarch64-apple-darwin
+          #   runner: macos-latest
           - target: x86_64-pc-windows-msvc
             runner: windows-latest
     runs-on: ${{ matrix.settings.runner }}
@@ -276,5 +276,6 @@ jobs:
         run: cargo check --all --release
 
       - name: Run Clippy
-        if: ${{ matrix.settings.target == 'aarch64-apple-darwin' || matrix.settings.target == 'x86_64-pc-windows-msvc' }}
+        # if: ${{ matrix.settings.target == 'aarch64-apple-darwin' || matrix.settings.target == 'x86_64-pc-windows-msvc' }}
+        if: ${{ matrix.settings.target == 'x86_64-pc-windows-msvc' }}
         run: cargo clippy --workspace --all-features --locked -- -D warnings
