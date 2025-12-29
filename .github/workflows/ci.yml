@@ -161,7 +161,6 @@ jobs:
   build-desktop:
     name: Build Desktop
     needs: changes
-    if: needs.changes.outputs.desktop == 'true'
     strategy:
       fail-fast: false
       matrix:
