@@ -17,13 +17,45 @@
 		}
 	},
 	"bundle": {
+		"active": true,
+		"createUpdaterArtifacts": true,
+		"targets": "all",
+		"icon": [
+			"icons/32x32.png",
+			"icons/128x128.png",
+			"icons/128x128@2x.png",
+			"icons/macos/icon.icns",
+			"icons/icon.ico"
+		],
+		"resources": {
+			"assets/backgrounds/macOS/*": "assets/backgrounds/macOS/",
+			"assets/backgrounds/blue/*": "assets/backgrounds/blue/",
+			"assets/backgrounds/dark/*": "assets/backgrounds/dark/",
+			"assets/backgrounds/orange/*": "assets/backgrounds/orange/",
+			"assets/backgrounds/purple/*": "assets/backgrounds/purple/",
+			"../src/assets/rive/*.riv": "assets/rive/",
+			"../../../target/ffmpeg/bin/*.dll": "./"
+		},
 		"macOS": {
 			"entitlements": "Entitlements.plist"
 		},
 		"windows": {
+			"nsis": {
+				"headerImage": "assets/nsis-header.bmp",
+				"sidebarImage": "assets/nsis-sidebar.bmp",
+				"installerIcon": "icons/icon.ico"
+			},
 			"wix": {
 				"upgradeCode": "a765d9de-0ecc-55d0-b8a0-61e9d3276664"
 			}
-		}
+		},
+		"fileAssociations": [
+			{
+				"ext": ["cap"],
+				"name": "Cap Project",
+				"mimeType": "application/x-cap-project",
+				"role": "Editor"
+			}
+		]
 	}
 }

@@ -161,6 +161,7 @@ jobs:
   build-desktop:
     name: Build Desktop
     needs: changes
+    if: needs.changes.outputs.desktop == 'true'
     strategy:
       fail-fast: false
       matrix:
@@ -210,34 +211,9 @@ jobs:
         working-directory: apps/desktop
         run: |
           pnpm -w cap-setup
-          pnpm preparescript
-          pnpm tauri build --target ${{ matrix.settings.target }} --config src-tauri/tauri.conf.json || true
+          pnpm tauri build --debug --target ${{ matrix.settings.target }} --no-bundle
         env:
           RUST_TARGET_TRIPLE: ${{ matrix.settings.target }}
-          TAURI_SIGNING_PRIVATE_KEY: ""
-
-      - name: Check if installer exists
-        if: ${{ runner.os == 'Windows' }}
-        shell: pwsh
-        run: |
-          $installerPath = "target/${{ matrix.settings.target }}/release/bundle/nsis/*.exe"
-          $files = Get-ChildItem -Path $installerPath -ErrorAction SilentlyContinue
-          if ($files) {
-            Write-Host "Installer found:"
-            $files | ForEach-Object { Write-Host "  - $($_.FullName)" }
-          } else {
-            Write-Host "No installer found at: $installerPath"
-            exit 1
-          }
-
-      - name: Upload Windows installer
-        if: ${{ runner.os == 'Windows' }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-installer
-          path: target/${{ matrix.settings.target }}/release/bundle/nsis/*.exe
-          if-no-files-found: error
-          retention-days: 30
 
   tauri-plugins:
     name: Verify Tauri plugin versions

@@ -138,10 +138,10 @@ jobs:
       fail-fast: false
       matrix:
         settings:
-          - target: x86_64-apple-darwin
-            runner: macos-latest-xlarge
-          - target: aarch64-apple-darwin
-            runner: macos-latest-xlarge
+          # - target: x86_64-apple-darwin
+          #   runner: macos-latest-xlarge
+          # - target: aarch64-apple-darwin
+          #   runner: macos-latest-xlarge
           - target: x86_64-pc-windows-msvc
             runner: windows-latest
     env:
@@ -152,18 +152,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create API Key File
-        run: echo "${{ secrets.APPLE_API_KEY_FILE }}" > api.p8
+      # - name: Create API Key File
+      #   run: echo "${{ secrets.APPLE_API_KEY_FILE }}" > api.p8
 
-      - uses: apple-actions/import-codesign-certs@v2
-        if: ${{ matrix.settings.runner == 'macos-latest-xlarge' }}
-        with:
-          p12-file-base64: ${{ secrets.APPLE_CERTIFICATE }}
-          p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+      # - uses: apple-actions/import-codesign-certs@v2
+      #   if: ${{ matrix.settings.runner == 'macos-latest-xlarge' }}
+      #   with:
+      #     p12-file-base64: ${{ secrets.APPLE_CERTIFICATE }}
+      #     p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
 
-      - name: Verify certificate
-        if: ${{ matrix.settings.runner == 'macos-latest-xlarge' }}
-        run: security find-identity -v -p codesigning ${{ runner.temp }}/build.keychain
+      # - name: Verify certificate
+      #   if: ${{ matrix.settings.runner == 'macos-latest-xlarge' }}
+      #   run: security find-identity -v -p codesigning ${{ runner.temp }}/build.keychain
 
       - name: Rust setup
         uses: dtolnay/rust-toolchain@stable
@@ -198,14 +198,14 @@ jobs:
           CI: false
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # codesigning
-          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
-          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          # APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          # APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          # APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
           # notarization
-          APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
-          APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
-          APPLE_API_KEY_PATH: ${{ github.workspace }}/api.p8
-          APPLE_KEYCHAIN: ${{ runner.temp }}/build.keychain
+          # APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
+          # APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
+          # APPLE_API_KEY_PATH: ${{ github.workspace }}/api.p8
+          # APPLE_KEYCHAIN: ${{ runner.temp }}/build.keychain
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
 
@@ -265,13 +265,13 @@ jobs:
 
       - uses: matbour/setup-sentry-cli@8ef22a4ff03bcd1ebbcaa3a36a81482ca8e3872e
 
-      - name: Upload debug symbols to Sentry
-        if: ${{ runner.os == 'macOS' }}
-        shell: bash
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-        run: |
-          sentry-cli debug-files upload -o ${{ env.SENTRY_ORG }} -p ${{ env.SENTRY_PROJECT }} target/Cap.dSYM
+      # - name: Upload debug symbols to Sentry
+      #   if: ${{ runner.os == 'macOS' }}
+      #   shell: bash
+      #   env:
+      #     SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      #   run: |
+      #     sentry-cli debug-files upload -o ${{ env.SENTRY_ORG }} -p ${{ env.SENTRY_PROJECT }} target/Cap.dSYM
 
       - name: Upload debug symbols to Sentry
         if: ${{ runner.os == 'Windows' }}
