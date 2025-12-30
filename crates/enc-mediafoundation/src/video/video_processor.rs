@@ -11,12 +11,12 @@ use windows::{
                 D3D11_VIDEO_FRAME_FORMAT_PROGRESSIVE, D3D11_VIDEO_PROCESSOR_COLOR_SPACE,
                 D3D11_VIDEO_PROCESSOR_CONTENT_DESC, D3D11_VIDEO_PROCESSOR_INPUT_VIEW_DESC,
                 D3D11_VIDEO_PROCESSOR_INPUT_VIEW_DESC_0, D3D11_VIDEO_PROCESSOR_NOMINAL_RANGE_0_255,
-                D3D11_VIDEO_PROCESSOR_OUTPUT_VIEW_DESC, D3D11_VIDEO_PROCESSOR_OUTPUT_VIEW_DESC_0,
-                D3D11_VIDEO_PROCESSOR_STREAM, D3D11_VIDEO_USAGE_OPTIMAL_QUALITY,
-                D3D11_VPIV_DIMENSION_TEXTURE2D, D3D11_VPOV_DIMENSION_TEXTURE2D, ID3D11Device,
-                ID3D11DeviceContext, ID3D11Texture2D, ID3D11VideoContext, ID3D11VideoDevice,
-                ID3D11VideoProcessor, ID3D11VideoProcessorInputView,
-                ID3D11VideoProcessorOutputView,
+                D3D11_VIDEO_PROCESSOR_NOMINAL_RANGE_16_235, D3D11_VIDEO_PROCESSOR_OUTPUT_VIEW_DESC,
+                D3D11_VIDEO_PROCESSOR_OUTPUT_VIEW_DESC_0, D3D11_VIDEO_PROCESSOR_STREAM,
+                D3D11_VIDEO_USAGE_OPTIMAL_QUALITY, D3D11_VPIV_DIMENSION_TEXTURE2D,
+                D3D11_VPOV_DIMENSION_TEXTURE2D, ID3D11Device, ID3D11DeviceContext, ID3D11Texture2D,
+                ID3D11VideoContext, ID3D11VideoDevice, ID3D11VideoProcessor,
+                ID3D11VideoProcessorInputView, ID3D11VideoProcessorOutputView,
             },
             Dxgi::Common::{DXGI_FORMAT, DXGI_RATIONAL, DXGI_SAMPLE_DESC},
         },
@@ -95,10 +95,11 @@ impl VideoProcessor {
         let video_processor = unsafe { video_device.CreateVideoProcessor(&video_enum, 0) }
             .map_err(NewVideoProcessorError::CreateVideoProcessor)?;
 
-        let color_space = D3D11_VIDEO_PROCESSOR_COLOR_SPACE {
+        let mut color_space = D3D11_VIDEO_PROCESSOR_COLOR_SPACE {
             _bitfield: 1 | D3D11_VIDEO_PROCESSOR_NOMINAL_RANGE_0_255.0 as u32,
         };
         unsafe { video_context.VideoProcessorSetOutputColorSpace(&video_processor, &color_space) };
+        color_space._bitfield = 1 | D3D11_VIDEO_PROCESSOR_NOMINAL_RANGE_16_235.0 as u32;
         unsafe {
             video_context.VideoProcessorSetStreamColorSpace(&video_processor, 0, &color_space)
         };
